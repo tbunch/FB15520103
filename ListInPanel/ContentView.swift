@@ -8,6 +8,8 @@
 import SwiftUI
 
 struct ContentView: View {
+    @State private var someText = "sample text"
+    
     var body: some View {
         GeometryReader { containerGeometry in
             HStack {
@@ -21,6 +23,9 @@ struct ContentView: View {
                     Text("• Note that the chevron still works")
                     Text("• Note that selection in the other")
                     Text("  popover doesn't exhibit this bug")
+                    TextField(text: $someText) {
+                        Text("gratuitous field:")
+                    }
                 }
 
                 VStack {

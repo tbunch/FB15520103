@@ -10,6 +10,8 @@ import SwiftUI
 struct ShapePalette: View {
     var expanded: Bool = true
     @State private var selected: Bool = false
+    @State private var toggleState: Bool = false
+    
     var body: some View {
         if expanded {
             fullPalette
@@ -23,8 +25,9 @@ struct ShapePalette: View {
             mediumPalette
             Divider()
             Toggle("Allow connections from lines", isOn: Binding(get: {
-                true
+                toggleState
             }, set: { _ in
+                toggleState.toggle()
             }))
             .fixedSize(horizontal: true, vertical: false)
         }

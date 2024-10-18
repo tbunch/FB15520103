@@ -17,6 +17,7 @@ public struct PaletteColumnViewPopover {
         let popover = NSPopover()
         popover.contentViewController = paletteViewController
         popover.delegate = paletteViewController
+        popover.behavior = .transient
         popover.show(relativeTo: rect, of: view, preferredEdge: edge)
     }
 }
@@ -26,7 +27,7 @@ class PalettePopoverViewController<Content>: NSViewController, NSPopoverDelegate
     
     init(hosting content: Content, containingList: Bool) {
         self.containingList = containingList
-        hostingView = NSHostingView(rootView: content)
+        hostingView = AcceptsFirstMouseHostingView(rootView: content)
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         hostingView.sizingOptions = [.minSize, .standardBounds]
         

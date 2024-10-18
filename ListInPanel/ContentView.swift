@@ -13,6 +13,14 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { containerGeometry in
             HStack {
+                Button(action: {
+                    if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
+                        _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: true)
+                    }
+                }, label: {
+                    Text("Open Popover with List")
+                })
+
                 VStack(alignment: .leading) {
                     Text("• Open the popover with List")
                     Text("• Test that tap select/deselcts rows")
@@ -28,22 +36,13 @@ struct ContentView: View {
                     }
                 }
 
-                VStack {
-                    Button(action: {
-                        if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
-                            _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: true)
-                        }
-                    }, label: {
-                        Text("Open Popover with List")
-                    })
-                    Button(action: {
-                        if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
-                            _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: false)
-                        }
-                    }, label: {
-                        Text("Open popover without")
-                    })
-                }
+                Button(action: {
+                    if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
+                        _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: false)
+                    }
+                }, label: {
+                    Text("Open popover without")
+                })
             }
             .frame(width: 400, height: 200)
         }

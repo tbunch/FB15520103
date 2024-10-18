@@ -17,8 +17,8 @@ public struct PaletteColumnViewPopover {
         let popover = NSPopover()
         popover.contentViewController = paletteViewController
         popover.delegate = paletteViewController
-        popover.behavior = .transient
-        popover.show(relativeTo: rect, of: view, preferredEdge: edge)
+//        popover.behavior = .semitransient
+        popover.show(relativeTo: rect, of: view, preferredEdge: containingList ? .minX : .maxX)
     }
 }
 

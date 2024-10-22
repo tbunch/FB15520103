@@ -27,9 +27,10 @@ class PalettePopoverViewController<Content>: NSViewController, NSPopoverDelegate
     
     init(hosting content: Content, containingList: Bool) {
         self.containingList = containingList
-        hostingView = AcceptsFirstMouseHostingView(rootView: content)
+        hostingView = PaletteHostingView(rootView: content)
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         hostingView.sizingOptions = [.minSize, .standardBounds]
+        hostingView.isFlipped = false
         
         let contentView = NSView()
         contentView.translatesAutoresizingMaskIntoConstraints = false

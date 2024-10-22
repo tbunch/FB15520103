@@ -44,7 +44,7 @@ struct ContentView: View {
                     Text("Open popover without")
                 })
             }
-            .frame(width: 400, height: 200)
+            .frame(minWidth: 600, minHeight: 200)
         }
         .padding()
     }

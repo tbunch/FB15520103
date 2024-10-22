@@ -36,6 +36,7 @@ struct ScrollablePalette: View {
                     }
                 }
         }
+        .trivialWrapper()
         .frame(height: 150)
     }
 }

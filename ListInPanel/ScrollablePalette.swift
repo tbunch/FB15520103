@@ -10,6 +10,8 @@ import SwiftUI
 struct ScrollablePalette: View {
     var expanded: Bool = true
     @State private var selected: [Int] = []
+    @FocusState private var focused: Bool
+    @State private var selectionColor = Color.blue
     
     var body: some View {
         if expanded {
@@ -26,18 +28,30 @@ struct ScrollablePalette: View {
                 .padding(4)
                 .contentShape(Rectangle())
                 .background {
-                    RoundedRectangle(cornerRadius: 6).fill(.blue).opacity(selected.contains(index) ? 1 : 0)
+                    RoundedRectangle(cornerRadius: 6).fill(selectionColor).opacity(selected.contains(index) ? 1 : 0)
+                    // uncommenting the following two lines causes the doesn't-get-taps bug. We need to be able to do this if we are to change the selection color based on whether the view is focused.
+                    // .focusable()
+                    // .focused($focused)
+                        .onKeyPress { press in
+                            print("\(press.characters)")
+                            return .handled
+                        }
                 }
                 .onTapGesture {
                     if let indexInSelected = selected.firstIndex(of: index) {
                         selected.remove(at: indexInSelected)
+//                        focused = true
                     } else {
                         selected.append(index)
                     }
                 }
         }
-        .trivialWrapper()
         .frame(height: 150)
+        .onChange(of: focused) { oldValue, newValue in
+//            selectionColor = newValue ? .blue : .gray
+        }
+        // uncommenting the following line causes the doesn't-get-taps bug. In OmniGraffle we have a more complicated wrapper to help determine if the view is focused or if a text field is editing within it. It turns out even a trivial wrapper provokes the bug
+//        .trivialWrapper()
     }
 }
 

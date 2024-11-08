@@ -9,40 +9,49 @@ import SwiftUI
 
 struct ContentView: View {
     @State private var someText = "sample text"
+    let controller = AppKitPanelController()
     
     var body: some View {
-        GeometryReader { containerGeometry in
-            HStack {
-                VStack(alignment: .leading) {
-                    Text("• Find the panel in the lower left of the screen")
-                    Text("• Tap some rows - nothing happens")
-                    Text("• Tap the titlebar of the panel")
-                    Text("• Tap some rows - now you can select them")
-                    Text("• The last row you tap will be focused")
-                    Text("• Tap on the main window")
-                    Text("• Tap on rows other than the focused row - nothing")
-                    Text("• Tap on the focused row - it works, and you can now tap others")
-                    Text("• But that's because it stole key status, which we don't want")
-                    Text("• Repeat tapping main window, rows in panel, titlebar of panel")
-                    Text("• (The sample text is just provided to make key state more visible)")
-                    TextField(text: $someText) {
-                        Text("gratuitous field:")
-                    }
-                }
+        VStack(alignment: .leading) {
+            let instructions =
+            "• Find the panel in the left of the screen\n" +
+            "• Tap some a row - panel becomes key, row not selected\n" +
+            "• Tap some rows - now you can select them\n" +
+            "• Tap on the main window\n" +
+            "• Tap on more rows - nothing\n" +
+            "• But that's because it stole key status, which we don't want\n" +
+            "• Repeat tapping main window, rows in panel, titlebar of panel\n" +
+            "• (The sample text is just provided to make key state more visible)"
+            Text(instructions)
+            TextField(text: $someText) {
+                Text("gratuitous field:")
             }
-            .padding()
         }
+        .padding()
         .onAppear {
-            let panel = NSPanel(contentRect: NSRect(x: 10, y: 10, width: 400, height: 400), styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
-            panel.becomesKeyOnlyIfNeeded = true
-            panel.isFloatingPanel = true
-            let windowController = NSWindowController(window: panel)
-            let paletteViewController = PanelViewController()
-            windowController.contentViewController = paletteViewController
-            panel.orderFront(nil)
+            showSwiftUIPanel()
+            showAppKitPanel()
         }
         .padding()
     }
+    
+    func showSwiftUIPanel() {
+        let panel = NSPanel(contentRect: NSRect(x: 100, y: 500, width: 400, height: 400), styleMask: [.utilityWindow, .nonactivatingPanel, .titled, .closable, .miniaturizable, .resizable], backing: .buffered, defer: true)
+        panel.isFloatingPanel = true
+        panel.title = "SwiftUI Panel (broken)"
+        panel.becomesKeyOnlyIfNeeded = true
+        
+        let windowController = NSWindowController(window: panel)
+        let paletteViewController = PanelViewController()
+        windowController.contentViewController = paletteViewController
+        
+        panel.orderFront(nil)
+    }
+    
+    func showAppKitPanel() {
+        controller.window?.orderFront(nil)
+    }
+    
 }
 
 #Preview {

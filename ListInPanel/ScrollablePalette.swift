@@ -9,7 +9,7 @@ import SwiftUI
 
 struct ScrollablePalette: View {
     @State private var selected: [Int] = []
-    @FocusState private var focused: Int?
+//    @FocusState private var focused: Int?
     @State private var selectionColor = Color.blue
     
     var body: some View {
@@ -18,8 +18,8 @@ struct ScrollablePalette: View {
                 .frame(maxWidth: .infinity)
                 .padding(4)
                 .contentShape(Rectangle())
-                .focusable()
-                .focused($focused, equals: index)
+//                .focusable()
+//                .focused($focused, equals: index)
                 .onKeyPress { press in
                     print("\(press.characters)")
                     return .handled
@@ -30,7 +30,7 @@ struct ScrollablePalette: View {
                 .onTapGesture {
                     if let indexInSelected = selected.firstIndex(of: index) {
                         selected.remove(at: indexInSelected)
-                        focused = index
+//                        focused = index
                     } else {
                         selected.append(index)
                     }
@@ -38,8 +38,8 @@ struct ScrollablePalette: View {
         }
         .frame(minWidth: 400, minHeight: 600)
         .padding()
-        .onChange(of: focused) { oldValue, newValue in
-        }
+//        .onChange(of: focused) { oldValue, newValue in
+//        }
     }
 }
 

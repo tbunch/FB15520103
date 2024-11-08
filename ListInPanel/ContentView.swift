@@ -13,52 +13,35 @@ struct ContentView: View {
     var body: some View {
         GeometryReader { containerGeometry in
             HStack {
-                Button(action: {
-                    if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
-                        _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: true)
-                    }
-                }, label: {
-                    Text("Open Popover with List")
-                })
-
                 VStack(alignment: .leading) {
-                    Text("• Open the popover with List")
-                    Text("• Test that tap select/deselcts rows")
-                    Text("• Detach the popover")
-                    Text("• Test that tap works")
-                    Text("• Click on the main window")
-                    Text("• Test that tap no longer works")
-                    Text("• Note that the chevron still works")
-                    Text("• Note that selection in the other")
-                    Text("  popover doesn't exhibit this bug")
+                    Text("• Find the panel in the lower left of the screen")
+                    Text("• Tap some rows - nothing happens")
+                    Text("• Tap the titlebar of the panel")
+                    Text("• Tap some rows - now you can select them")
+                    Text("• The last row you tap will be focused")
+                    Text("• Tap on the main window")
+                    Text("• Tap on rows other than the focused row - nothing")
+                    Text("• Tap on the focused row - it works, and you can now tap others")
+                    Text("• But that's because it stole key status, which we don't want")
+                    Text("• Repeat tapping main window, rows in panel, titlebar of panel")
+                    Text("• (The sample text is just provided to make key state more visible)")
                     TextField(text: $someText) {
                         Text("gratuitous field:")
                     }
                 }
-
-                Button(action: {
-                    if let currentEvent = NSApplication.shared.currentEvent, let window = currentEvent.window {
-                        _ = openPalettePopover(in: window, geometry: containerGeometry, containingList: false)
-                    }
-                }, label: {
-                    Text("Open popover without")
-                })
             }
-            .frame(minWidth: 600, minHeight: 200)
+            .padding()
+        }
+        .onAppear {
+            let panel = NSPanel(contentRect: NSRect(x: 10, y: 10, width: 400, height: 400), styleMask: [.titled, .closable, .resizable, .utilityWindow], backing: .buffered, defer: false)
+            panel.becomesKeyOnlyIfNeeded = true
+            panel.isFloatingPanel = true
+            let windowController = NSWindowController(window: panel)
+            let paletteViewController = PanelViewController()
+            windowController.contentViewController = paletteViewController
+            panel.orderFront(nil)
         }
         .padding()
-    }
-               
-    private func openPalettePopover(in parent: NSWindow, geometry: GeometryProxy, containingList: Bool) -> Bool {
-        var buttonFrameInWindowSpace = geometry.frame(in: .global)
-        buttonFrameInWindowSpace.origin.y = parent.frame.size.height - buttonFrameInWindowSpace.maxY    // .frame(in:) is flipped y-axis on macOS 12
-        
-        guard let hitView = parent.contentView else {
-            print("Issue opening palette popover: hit view not found")
-            return false
-        }
-        PaletteColumnViewPopover.popover(view: hitView, rect: buttonFrameInWindowSpace, containingList: containingList)
-        return true
     }
 }
 

@@ -14,7 +14,7 @@ class PaletteHostingView<Content>: NSHostingView<Content> where Content : View {
        
     override var needsPanelToBecomeKey: Bool {
         get {
-            return true
+            return false
         }
     }
 }

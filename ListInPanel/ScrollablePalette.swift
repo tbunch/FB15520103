@@ -8,9 +8,14 @@
 import SwiftUI
 
 struct ScrollablePalette: View {
-    @State private var selected: [Int] = []
-//    @FocusState private var focused: Int?
-    @State private var selectionColor = Color(NSColor.unemphasizedSelectedContentBackgroundColor)
+    var window: NSWindow
+    
+    @State private var selected: Set<Int> = Set()
+    private var selectionColor: Color {
+        get {
+            window.isKeyWindow ? Color(NSColor.selectedContentBackgroundColor) : Color(NSColor.unemphasizedSelectedContentBackgroundColor)
+        }
+    }
     
     var body: some View {
         List(1..<20) { index in
@@ -18,29 +23,25 @@ struct ScrollablePalette: View {
                 .frame(maxWidth: .infinity)
                 .padding(4)
                 .contentShape(Rectangle())
-            //                .focusable()
-            //                .focused($focused, equals: index)
                 .onKeyPress { press in
                     print("\(press.characters)")
                     return .handled
                 }
+                .trivialWrapper()
                 .background {
                     RoundedRectangle(cornerRadius: 6).fill(selectionColor).opacity(selected.contains(index) ? 1 : 0)
                 }
                 .onTapGesture {
-                    if let indexInSelected = selected.firstIndex(of: index) {
-                        selected.remove(at: indexInSelected)
-                        //                        focused = index
+                    if selected.contains(index) {
+                        window.becomeKey()
                     } else {
-                        selected.append(index)
+                        selected.insert(index)
                     }
                 }
                 .listRowSeparator(.hidden)
         }
         .frame(minWidth: 400, minHeight: 600)
         .padding()
-//        .onChange(of: focused) { oldValue, newValue in
-//        }
     }
 }
 

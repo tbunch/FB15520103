@@ -12,9 +12,11 @@ class PaletteHostingView<Content>: NSHostingView<Content> where Content : View {
         true
     }
        
+    override var canBecomeKeyView: Bool {
+        true
+    }
+
     override var needsPanelToBecomeKey: Bool {
-        get {
             return false
-        }
     }
 }

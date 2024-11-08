@@ -35,6 +35,6 @@ struct TrivialWrapperRepresentable : NSViewRepresentable {
 }
 
 @objc public class TrivialWrapperNSView: NSView {
-    public override var acceptsFirstResponder: Bool { return true }
-    public override var needsPanelToBecomeKey: Bool { return true }
+//    public override var acceptsFirstResponder: Bool { return true }
+//    public override var needsPanelToBecomeKey: Bool { return true }
 }

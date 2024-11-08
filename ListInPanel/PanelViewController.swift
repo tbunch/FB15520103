@@ -1,12 +1,10 @@
 import SwiftUI
 
-private var detachedWindowControllers: [NSWindowController] = []
-
 class PanelViewController: NSViewController {
     var hostingView: NSHostingView<ScrollablePalette>
-
-    init() {
-        let paletteView = ScrollablePalette()
+    
+    init(window: NSWindow) {
+        let paletteView = ScrollablePalette(window: window)
         hostingView = PaletteHostingView(rootView: paletteView)
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         hostingView.sizingOptions = [.minSize, .standardBounds]

@@ -8,12 +8,13 @@
 import SwiftUI
 
 struct ScrollablePalette: View {
-    var window: NSWindow
+    @StateObject var focusState = PaletteFocusState()
+    @Environment(\.appearsActive) private var appearsActive
     
     @State private var selected: Set<Int> = Set()
     private var selectionColor: Color {
         get {
-            window.isKeyWindow ? Color(NSColor.selectedContentBackgroundColor) : Color(NSColor.unemphasizedSelectedContentBackgroundColor)
+            appearsActive ? Color(NSColor.selectedContentBackgroundColor) : Color(NSColor.unemphasizedSelectedContentBackgroundColor)
         }
     }
     
@@ -33,7 +34,7 @@ struct ScrollablePalette: View {
                 }
                 .onTapGesture {
                     if selected.contains(index) {
-                        window.becomeKey()
+                        focusState.isFocused = true
                     } else {
                         selected.insert(index)
                     }
@@ -42,6 +43,20 @@ struct ScrollablePalette: View {
         }
         .frame(minWidth: 400, minHeight: 600)
         .padding()
+        .paletteFocusView(paletteFocusState: focusState, onCommand: doCommand, validate: nil)
+    }
+    
+    func doCommand(_ action: PaletteNSViewAction) {
+        switch action {
+        case .moveUp:
+            selected = Set([(selected.first ?? 1) - 1])
+            break
+        case .moveDown:
+//            selected = Set([(selected.last ?? 1) - 1])
+            break
+        default:
+            break
+        }
     }
 }
 

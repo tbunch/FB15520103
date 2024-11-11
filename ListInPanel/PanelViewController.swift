@@ -4,7 +4,7 @@ class PanelViewController: NSViewController {
     var hostingView: NSHostingView<ScrollablePalette>
     
     init(window: NSWindow) {
-        let paletteView = ScrollablePalette(window: window)
+        let paletteView = ScrollablePalette()
         hostingView = PaletteHostingView(rootView: paletteView)
         hostingView.translatesAutoresizingMaskIntoConstraints = false
         hostingView.sizingOptions = [.minSize, .standardBounds]
